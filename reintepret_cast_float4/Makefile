@@ -1,14 +1,18 @@
-TARGET = vec_add.out
-SRC = vec_add.cu
+TARGETS = vec_add.out vec_add_float4.out
 
 NVCC = nvcc
 NVCC_FLAGS = -O2 -std=c++20
 NVCC_FLAGS += -gencode arch=compute_80,code=sm_80
 
-all: $(TARGET)
+all: $(TARGETS)
 
-$(TARGET): $(SRC)
-	$(NVCC) $(NVCC_FLAGS) -o $(TARGET) $(SRC)
+vec_add.out: vec_add.cu
+	$(NVCC) $(NVCC_FLAGS) -o $@ $<
+
+vec_add_float4.out: vec_add_float4.cu
+	$(NVCC) $(NVCC_FLAGS) -o $@ $<
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGETS)
+
+.PHONY: all clean
