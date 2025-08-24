@@ -1,5 +1,5 @@
-TARGETS = vec_add.out vec_add_float4.out
-PTX_FILES = vec_add.ptx vec_add_float4.ptx
+TARGETS = vec_add.out vec_add_float4.out vec_add_float4_miss_alignment.out
+PTX_FILES = vec_add.ptx vec_add_float4.ptx vec_add_float4_miss_alignment.ptx
 
 NVCC = nvcc
 NVCC_FLAGS = -O2 -std=c++20
@@ -14,6 +14,9 @@ vec_add.out: vec_add.cu
 vec_add_float4.out: vec_add_float4.cu
 	$(NVCC) $(NVCC_FLAGS) -o $@ $<
 
+vec_add_float4_miss_alignment.out: vec_add_float4_miss_alignment.cu
+	$(NVCC) $(NVCC_FLAGS) -o $@ $<
+
 # PTX generation targets
 ptx: $(PTX_FILES)
 
@@ -21,6 +24,9 @@ vec_add.ptx: vec_add.cu
 	$(NVCC) $(NVCC_FLAGS) -ptx -o $@ $<
 
 vec_add_float4.ptx: vec_add_float4.cu
+	$(NVCC) $(NVCC_FLAGS) -ptx -o $@ $<
+
+vec_add_float4_miss_alignment.ptx: vec_add_float4_miss_alignment.cu
 	$(NVCC) $(NVCC_FLAGS) -ptx -o $@ $<
 
 # Clean up
